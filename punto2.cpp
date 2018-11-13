@@ -1,9 +1,9 @@
-#include <iostream>
-#include <stdio.h>
-#include <cmath>
-#include <cstdlib>
-#include <ctime>
-#include <fstream> 
+//#include <iostream>
+//#include <stdio.h>
+//#include <cmath>
+//#include <cstdlib>
+//#include <ctime>
+//#include <fstream> 
 #include<bits/stdc++.h>
 using namespace std;
 
