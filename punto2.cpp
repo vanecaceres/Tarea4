@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-
+ofstream fileEE;
 ///Variebles que guarda los grados con los cuales se alcanza la distanica maxima
 int max_dist=-1;
 int max_dist_angle=-1;
@@ -9,7 +9,7 @@ double gravity=10.0;
 ///Tiempo estimado en el que caera el proyectil en segundos
 double tim=10.0;
 ///Numero de pasos a realizar para completar el tiempo estimado
-int steps=1000;
+const int steps=1000001;
 ///Diferencial de tiempo,El tiempo estimado sobre el numero de pasos
 double dt=tim/(steps-1);
 ///Arreglo para la velocidad en el eje x
@@ -30,8 +30,8 @@ double T[steps];
 double PI = 3.1416;
 //Creo una funcion general que me resuelva de acuerdo a los parametros que le entren, en este caso la masa, coeficiente de friccion, angulo y posiciones iniciales
 //Long double me coge más numeros, mirar luego si long o double
-void solution(double mass,double coefficient_of_friction,double angle,long double Xo,long double Yo,long double Vo){
-	//Angulo con unidades en radianes para usar sin y cos 
+void solution(double mass,double coefficient_of_friction,double angle, double Xo, double Yo, double Vo){
+	//Angulo con unidades en radianes para usar sin y cos
 	double theta=angle*PI/180.0;
 	//Condiciones iniciales
 	x[0]=Xo;
@@ -44,7 +44,8 @@ void solution(double mass,double coefficient_of_friction,double angle,long doubl
     	ax[0]=-coefficient_of_friction*vx[0]*Vo/mass;
 	//En y mi gravedad afecta, en x no hay gravedad
     	ay[0]=-gravity-coefficient_of_friction*vy[0]*Vo/mass;
-	//Mi límite es 0, que sería el suelo 
+	//Mi límite es 0, que sería el suelo
+	double norm;
 	int limit=0;
 	///Por el método de leapfrog
     	for(int i=1;i<steps;i++){
@@ -54,8 +55,9 @@ void solution(double mass,double coefficient_of_friction,double angle,long doubl
         //la aceleración en base a los valores obtenidos anteriormente
         x[i]=x[i-1]+vx[i-1]*dt+ax[i-1]*0.5*dt*dt;
         y[i]=y[i-1]+vy[i-1]*dt+ay[i-1]*0.5*dt*dt;
-	//Creo la norma 	
-	norm=sqrt((vx[i-1]*vx[i-1])+(vy[i-1]*vy[i-1]));
+        //Creo la norma
+        norm=sqrt((vx[i-1]*vx[i-1])+(vy[i-1]*vy[i-1]));
+
 	}
 }
 int main(){
