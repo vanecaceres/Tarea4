@@ -63,9 +63,18 @@ void solution(double mass,double coefficient_of_friction,double angle, double Xo
 	vx[i]=vx[i-1]+(ax[i]+ax[i-1])*0.5*dt;
         vy[i]=vy[i-1]+(ay[i]+ay[i-1])*0.5*dt;
 	//Ahora uso el limite para ver si mi proyectil ya cayo en el suelo para detener mi for
+	if(y[i]<0){
+		limit=i;
+		break;
+ 	}
 	}
-	fileEE<<"Distancia recorrida con " << endl;
+	if(x[limit]>max_dist){
+        	max_dist=x[limit];
+        	max_dist_angle=angle;
+    }
+    fileEE<<"Distancia recorrida con "<< endl;
 }
+
 int main(){
 
 	return 0;
