@@ -23,4 +23,13 @@ double ax[steps];
 double ay[steps];
 ///Arreglo para el tiempo
 double T[steps];
-//
+//Creo una funcion general que me resuelva de acuerdo a los parametros que le entren, en este caso la masa, coeficiente de friccion, angulo y posiciones iniciales
+void solution(double mass,double coefficient_of_friction,double angle,long double Xo,long double Yo,long double Vo){
+
+
+}
+int main(){
+
+	return 0;
+
+}
