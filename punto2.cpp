@@ -54,7 +54,14 @@ void solution(double mass,double coefficient_of_friction,double angle,long doubl
 	int limit=0;
 	///Por el método de leapfrog
     	for(int i=1;i<steps;i++){
-	
+	//Se guarda el tiempo actual
+        T[i]=T[i-1]+dt;
+        //Se calculan los nuevos valores para la poscicion la velocidad y
+        //la aceleración en base a los valores obtenidos anteriormente
+        x[i]=x[i-1]+vx[i-1]*dt+ax[i-1]*0.5*dt*dt;
+        y[i]=y[i-1]+vy[i-1]*dt+ay[i-1]*0.5*dt*dt;
+	//Creo la norma 	
+	norm=sqrt((vx[i-1]*vx[i-1])+(vy[i-1]*vy[i-1]));
 	}
 }
 int main(){
