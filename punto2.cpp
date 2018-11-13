@@ -57,8 +57,14 @@ void solution(double mass,double coefficient_of_friction,double angle, double Xo
         y[i]=y[i-1]+vy[i-1]*dt+ay[i-1]*0.5*dt*dt;
         //Creo la norma
         norm=sqrt((vx[i-1]*vx[i-1])+(vy[i-1]*vy[i-1]));
-
+	//Aceleraciòn en x y y
+        ax[i]=-coefficient_of_friction*norm*vx[i-1]/mass;
+        ay[i]=-gravity-coefficient_of_friction*norm*vy[i-1]/mass;
+	vx[i]=vx[i-1]+(ax[i]+ax[i-1])*0.5*dt;
+        vy[i]=vy[i-1]+(ay[i]+ay[i-1])*0.5*dt;
+	//Ahora uso el limite para ver si mi proyectil ya cayo en el suelo para detener mi for
 	}
+	fileEE<<"Distancia recorrida con " << endl;
 }
 int main(){
 
