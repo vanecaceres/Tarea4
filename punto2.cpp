@@ -89,6 +89,19 @@ int main(){
 //Hago un archivo donde agrego los datos a 45 grados para luego hacer el plot
 	fileEE.open("datos45.dat");
     fileEE<<limit<<endl;
+//Agrego mis x
+    for(int i=0;i<limit;i++)
+        fileEE<<x[i]<<" ";
+    fileEE<<endl;
+//Agrego mis y
+    for(int i=0;i<limit;i++)
+        fileEE<<y[i]<<" ";
+    fileEE<<endl;
+//Agrego mis tiempos
+    for(int i=0;i<limit;i++)
+        fileEE<<T[i]<<" ";
+    fileEE<<endl;
+    fileEE.close();
 
 	return 0;
 
