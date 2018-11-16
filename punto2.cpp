@@ -112,7 +112,20 @@ int main(){
     fileEE.close();
 //Creo otro archivo para guardar los datos de los angulos desde 10 hasta 70
     fileEE.open("DatosOtrosAngulos.dat");
-
+	flag=false;
+	for(int i = 10; i<= 70; i+=10){
+		solution(0.2,0.2,i,0,0,300);
+        fileEE<<limit<<endl;
+        for(int i=0;i<limit;i++)
+            fileEE<<x[i]<<" ";
+        fileEE<<endl;
+        for(int i=0;i<limit;i++)
+            fileEE<<y[i]<<" ";
+        fileEE<<endl;
+        for(int i=0;i<limit;i++)
+            fileEE<<T[i]<<" ";
+        fileEE<<endl;
+    }
 
 	return 0;
 
