@@ -93,8 +93,25 @@ int main(){
 	fileEE<< "mis x"<< " "<< "mis y" <<" " << "mis tiempos" << endl;
     for(int i=0;i<limit;i++)
         fileEE<<  x[i] <<" "<<y[i] <<" " <<T[i] << endl;
-
-
+	fileEE.close();
+//Creo otro archivo para la distancia de los otros angulos 10, 20, ... , hasta 70
+	fileEE.open("otrosAngulos.dat");
+	max_dist = -1;
+	max_dist_angle = -1;
+	for(int i = 10; i<= 70; i+=10)
+		solution(0.2,0.2,i,0,0,300);
+    fileEE<<"La distancia maxima se alcanza con "<<max_dist_angle<<" grados"<<endl;
+    fileEE.close();
+//Creo otro archivo para los datos de las distancias de los angulos 10, 20, ..., hasta 70
+	fileEE.open("otrosAngulos.dat");
+	max_dist = -1;
+	max_dist_angle = -1;
+	for(int i = 10; i<= 70; i+=10)
+		solution(0.2,0.2,i,0,0,300);
+    fileEE<<"La distancia maxima se alcanza con "<<max_dist_angle<<" grados"<<endl;
+    fileEE.close();
+//Creo otro archivo para guardar los datos de los angulos desde 10 hasta 70
+    fileEE.open("DatosOtrosAngulos.dat");
 
 
 	return 0;
