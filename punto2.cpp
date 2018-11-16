@@ -9,7 +9,7 @@ double gravity=10.0;
 ///Tiempo estimado en el que caera el proyectil en segundos
 double tim=10.0;
 ///Numero de pasos a realizar para completar el tiempo estimado
-const int steps=1000;
+const int steps=10001;
 ///Diferencial de tiempo,El tiempo estimado sobre el numero de pasos
 double dt=tim/(steps-1);
 ///Arreglo para la velocidad en el eje x
