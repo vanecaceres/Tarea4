@@ -80,13 +80,15 @@ void solution(double mass,double coefficient_of_friction,double angle, double Xo
     }	
 }
 
-int main(){
 
+int main(){
 //Hago un archivo donde agregue la distancia recorrida a 45 grados
 	fileEE.open("angulo45.dat");
 	solution(0.2,0.2,45,0,0,300);
 	fileEE.close();
 //Hago un archivo donde agrego los datos a 45 grados para luego hacer el plot
+	fileEE.open("datos45.dat");
+    fileEE<<limit<<endl;
 
 	return 0;
 
