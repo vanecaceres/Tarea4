@@ -66,7 +66,7 @@ double solucionFronterasAbiertas(int k, int i, int j){
     if(i*dx>=0.2 and i*dx<=0.3 and j*dy>=0.2 and j*dy<=0.3){
         T[k][i][j]=373.15;
     }else{
-        //Si i,j es un borde, retorne la solucion para un punto anterior que apunte hacia el centro
+        //Si i,j es un borde, entonces retorne la solucion para un punto anterior, para que no sea infinitesimal
         if(i==N-1 or i==0 or j==0 or j==N-1){
             if(i>=N/2 and j>=N/2){
                 T[k][i][j]=solucionFronterasAbiertas(k-1,i-1,j-1);
@@ -78,7 +78,7 @@ double solucionFronterasAbiertas(int k, int i, int j){
                 T[k][i][j]=solucionFronterasAbiertas(k-1,i+1,j-1);
             }
         }else{
-            // Si i,j no es un borde ni ula varrilla calcule la temperatura a traves de la formula
+            // Si i,j no es un borde ni la varrilla calcule la temperatura a traves de la formula
             T[k][i][j]=(1-4*fo)*solucionFronterasAbiertas(k-1,i,j)+fo*(solucionFronterasAbiertas(k-1,i+1,j)+solucionFronterasAbiertas(k-1,i,j-1)+solucionFronterasAbiertas(k-1,i-1,j)+solucionFronterasAbiertas(k-1,i,j+1));
         }
     }
@@ -114,7 +114,84 @@ void iniciarCondicionesAbiertas(){
 
 }
 
-int main(){
+//Constante para moverse sobre la matriz en condiciones periodicas
+const float mov=0.5;
+//Funcion que retorna verdadero o falso  dependiendo si las cordenadas x,y corresponden a una de las 9 varillas generadas para periodicas
+bool puntoDeVarrilla(int x,int y){
+    double a=x*dx;
+    double b=y*dx;
+    for(int i=-1; i<=1;i++){
+        for(int j=-1; j<=1;j++){
+            if((a+mov*i)>=0.7 and (a+mov*i)<=0.8 and (b+mov*j)>=0.7 and (b+mov*j)<=0.8){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+//Para fronteras periodicas
+double solucionFronterasPeriodicas(int k, int i, int j){
+    //Si ya se calculó la solucion que me la retorne
+    if(T[k][i][j]!=-1.0)
+        return T[k][i][j];
+    //Si i,j es un punto en el cual esta ubicada alguna de las 9 varillas asigne la temperatura de la varilla
+    if(puntoDeVarrilla(i,j)){
+        T[k][i][j]=373.15;
+    }else{
+        //Si i,j es un borde, retorne la solucion para un punto anterior que apunte hacia el centro
+        if(i==N or i==0 or j==0 or j==N){
+            if(i>=N/2 and j>=N/2){
+                T[k][i][j]=(1-4*fo)*solucionFronterasPeriodicas(k-1,i,j)+fo*(solucionFronterasPeriodicas(k-1,i-1,j)+solucionFronterasPeriodicas(k-1,i,j-1));
+            }else if(i<N/2 and j<N/2){
+                T[k][i][j]=(1-4*fo)*solucionFronterasPeriodicas(k-1,i,j)+fo*(solucionFronterasPeriodicas(k-1,i+1,j)+solucionFronterasPeriodicas(k-1,i,j+1));
+            }else if(i>=N/2 and j<N/2){
+                T[k][i][j]=(1-4*fo)*solucionFronterasPeriodicas(k-1,i,j)+fo*(solucionFronterasPeriodicas(k-1,i-1,j)+solucionFronterasPeriodicas(k-1,i,j+1));
+            }else if(i<N/2 and j>=N/2){
+                T[k][i][j]=(1-4*fo)*solucionFronterasPeriodicas(k-1,i,j)+fo*(solucionFronterasPeriodicas(k-1,i+1,j)+solucionFronterasPeriodicas(k-1,i,j-1));
+            }
+        }else{
+            // Si i,j no es un borde ni una  varrilla calcule la temperatura a traves de la formula
+            T[k][i][j]=(1-4*fo)*solucionFronterasPeriodicas(k-1,i,j)+fo*(solucionFronterasPeriodicas(k-1,i+1,j)+solucionFronterasPeriodicas(k-1,i,j-1)+solucionFronterasPeriodicas(k-1,i-1,j)+solucionFronterasPeriodicas(k-1,i,j+1));
+        }
+    }
+    //retorne la respuesta
+    return T[k][i][j];
+}
+///Funcion que genera la solucion para condiciones periodicas
 
+void iniciarCondicionesPeriodicas(){
+    tim=1500;
+    //Dado que solo nos interesa la varilla del centro tomamos los valores del arreglo desde 25 a 55
+    //estos valores son aproximadamente N/3 y 2N/3 respectivamente
+    //Limite inferior y limite superior de nuestra cuadricula
+    int li=25;
+    int lf=55;
+    fileEE<<lf-li<<endl;
+    //dado que la altura es 0.5 al generar las demas varillas nuestra altura es 1.5
+    //se actualiza dx con la nueva altura
+    dx=1.5/N;
+    //se imprime el dx tomando solo la parte que nos interesa
+    fileEE<<0.5/30<<endl;
+    //Se llena la matriz con -1 para indicar que no tiene calculado ningun valor
+    for(int k=0;k<tim;k++)
+        for(int i=0;i<=N;i++)
+            for(int j=0;j<=N;j++)
+                T[k][i][j]=-1.0;
+    //Se genera el tiempo 0 con las condiciones iniciales del problema
+    for(int i=0;i<=N;i++)
+        for(int j=0;j<=N;j++)
+            T[0][i][j]=285.15;
+    for(int k=0;k<tim;k++)
+        for(int i=li;i<=lf;i++)
+            for(int j=li;j<=lf;j++)
+                solucionFronterasPeriodicas(k,i,j);
+
+}
+
+int main(){
+	fileEE.open("datos.dat");
+	void iniciarCondicionesFijas();
+	void iniciarCondicionesAbiertas();
+	void iniciarCondicionesPeriodicas();
     return 0;
 }
