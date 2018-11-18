@@ -28,4 +28,7 @@ int tim;
 //Constante de estabilidad
 double fo=(v*dt/(dx*dx));
 
+int main(){
 
+    return 0;
+}
