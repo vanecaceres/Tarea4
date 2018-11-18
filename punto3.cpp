@@ -28,6 +28,21 @@ int tim;
 //Constante de estabilidad
 double fo=(v*dt/(dx*dx));
 
+void solucionFronterasFijas(){
+    //Se llena las condiciones de frontera para el tiempo 0
+    for(int i=0;i<N;i++)
+        for(int j=0;j<N;j++)
+            T[0][i][j]=285.15;
+    //Se empieza a iterar desde el tiempo 1
+
+}
+
+void solucionFronterasAbiertas(){
+}
+
+void solucionFronterasPeriodicas(){
+}
+
 int main(){
 
     return 0;
