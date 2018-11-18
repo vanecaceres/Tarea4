@@ -34,15 +34,37 @@ void solucionFronterasFijas(){
         for(int j=0;j<N;j++)
             T[0][i][j]=285.15;
     //Se empieza a iterar desde el tiempo 1
-
+    for(int k=1;k<tim;k++){
+        //Se llena las condiciones de frontera para el tiempo k
+        for(int i=0;i<N;i++){
+            T[k][i][0]=285.15;
+            T[k][i][N]=285.15;
+        }
+        for(int j=0;j<N;j++){
+            T[k][0][j]=285.15;
+            T[k][N][j]=285.15;
+        }
+        //Se empieza a llenar la cuadricula de temperaturas
+        for(int i=1;i<N;i++){
+            for(int j=1;j<N;j++){
+                //Si las posiciones i,j corresponden a las posciciones donde esta la varilla temperatura es 100 grados
+                //Si no es asi, entonces aplico la formula
+                if(i*dx>=0.2 and i*dx<=0.3 and j*dy>=0.2 and j*dy<=0.3)
+                    T[k][i][j]=373.15;
+                else
+                    T[k][i][j]=(1-4*fo)*T[k-1][i][j]+fo*(T[k-1][i+1][j]+T[k-1][i-1][j]+T[k-1][i][j+1]+T[k-1][i][j-1]);
+            }
+        }
+    }
 }
 
-void solucionFronterasAbiertas(){
+double solucionFronterasAbiertas(int k, int i, int j){
+	return 1.0;
 }
 
-void solucionFronterasPeriodicas(){
+double solucionFronterasPeriodicas(int k, int i, int j){
+	return 1.0;
 }
-
 int main(){
 
     return 0;
