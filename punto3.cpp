@@ -9,7 +9,7 @@ double k=1.62;
 double Cp=820.0;
 //Densidad g/cm³ -> k/m³
 double p=2.71*1000;
-//Coeficiente de difusion
+//Coeficiente de difusion62
 double v=k/(Cp*p);
 //Altura de la calcita 0.5m
 double h=0.5;
@@ -59,12 +59,61 @@ void solucionFronterasFijas(){
 }
 
 double solucionFronterasAbiertas(int k, int i, int j){
-	return 1.0;
+    //Si ya se calculó la solucion retornela
+    if(T[k][i][j]!=-1.0)
+        return T[k][i][j];
+    //Si i,j es un punto en el cual esta ubicada la varrilla asignele su temperatura
+    if(i*dx>=0.2 and i*dx<=0.3 and j*dy>=0.2 and j*dy<=0.3){
+        T[k][i][j]=373.15;
+    }else{
+        //Si i,j es un borde, retorne la solucion para un punto anterior que apunte hacia el centro
+        if(i==N-1 or i==0 or j==0 or j==N-1){
+            if(i>=N/2 and j>=N/2){
+                T[k][i][j]=solucionFronterasAbiertas(k-1,i-1,j-1);
+            }else if(i<N/2 and j<N/2){
+                T[k][i][j]=solucionFronterasAbiertas(k-1,i+1,j+1);
+            }else if(i>=N/2 and j<N/2){
+                T[k][i][j]=solucionFronterasAbiertas(k-1,i-1,j+1);
+            }else if(i<N/2 and j>=N/2){
+                T[k][i][j]=solucionFronterasAbiertas(k-1,i+1,j-1);
+            }
+        }else{
+            // Si i,j no es un borde ni ula varrilla calcule la temperatura a traves de la formula
+            T[k][i][j]=(1-4*fo)*solucionFronterasAbiertas(k-1,i,j)+fo*(solucionFronterasAbiertas(k-1,i+1,j)+solucionFronterasAbiertas(k-1,i,j-1)+solucionFronterasAbiertas(k-1,i-1,j)+solucionFronterasAbiertas(k-1,i,j+1));
+        }
+    }
+    //retorne la respuesta
+    return T[k][i][j];
+}
+ofstream fileEE;
+void iniciarCondicionesFijas(){
+    tim=1500;
+    dx=0.5/N;
+    fileEE<<N<<endl;
+    fileEE<<dx<<endl;
+    solucionFronterasFijas();
+}
+void iniciarCondicionesAbiertas(){
+    //Se aumenta el tiempo para apreciar un mejor resutado
+    tim=1500;
+    fileEE<<N<<endl;
+    fileEE<<dx<<endl;
+    //Se llena la matriz con -1 para indicar que no tiene calculado ningun valor
+    for(int k=0;k<tim;k++)
+        for(int i=0;i<N;i++)
+            for(int j=0;j<N;j++)
+                T[k][i][j]=-1.0;
+    //Se genera el tiempo 0 con las condiciones iniciales del problema
+    for(int i=0;i<=N;i++)
+        for(int j=0;j<=N;j++)
+            T[0][i][j]=285.15;
+    for(int k=0;k<tim;k++)
+        for(int i=0;i<N;i++)
+            for(int j=0;j<N;j++)
+                solucionFronterasAbiertas(k,i,j);
+
 }
 
-double solucionFronterasPeriodicas(int k, int i, int j){
-	return 1.0;
-}
 int main(){
 
     return 0;
