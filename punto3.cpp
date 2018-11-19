@@ -86,12 +86,41 @@ double solucionFronterasAbiertas(int k, int i, int j){
     return T[k][i][j];
 }
 ofstream fileEE;
+double Tpromedio[N][N];
+
+///Funcion para imprimir los valores del arreglo de temperatura
+void imprimir(int tiempo,int limite_inferior,int limite_superior){
+    int aumentoTiempo=(tiempo/4)-2;
+    for(int k=0;k<4;k++)
+        for(int i=limite_inferior;i<limite_superior;i++)
+            for(int j=limite_inferior;j<limite_superior;j++)
+                fileEE<<T[1+aumentoTiempo*k][i][j]<<endl;
+}
+
+///Funcion para hallar la temperatura promedio
+void hallarTemperaturaPromedio(int tim,int limite_inferior,int limite_superior){
+    //Se inicializa el arreglo con 0
+    for(int i=limite_inferior;i<limite_superior;i++)
+            for(int j=limite_inferior;j<limite_superior;j++)
+                Tpromedio[i][j]=0;
+    //Se suman todas las temperaturas en i,j a traves del tiempo divididas en el tiempo total para sacar el primedio
+    for(int k=0;k<tim;k++)
+        for(int i=limite_inferior;i<limite_superior;i++)
+            for(int j=limite_inferior;j<limite_superior;j++)
+                Tpromedio[i][j]+=(T[k][i][j])/tim;
+    for(int i=limite_inferior;i<limite_superior;i++)
+        for(int j=limite_inferior;j<limite_superior;j++)
+            fileEE<<Tpromedio[i][j]<<endl;
+}
+
 void iniciarCondicionesFijas(){
     tim=1500;
     dx=0.5/N;
     fileEE<<N<<endl;
     fileEE<<dx<<endl;
     solucionFronterasFijas();
+    imprimir(tim,0,N);
+    hallarTemperaturaPromedio(tim,0,N);
 }
 void iniciarCondicionesAbiertas(){
     //Se aumenta el tiempo para apreciar un mejor resutado
@@ -111,6 +140,8 @@ void iniciarCondicionesAbiertas(){
         for(int i=0;i<N;i++)
             for(int j=0;j<N;j++)
                 solucionFronterasAbiertas(k,i,j);
+    imprimir(tim,0,N);
+    hallarTemperaturaPromedio(tim,0,N);
 
 }
 
@@ -185,6 +216,9 @@ void iniciarCondicionesPeriodicas(){
         for(int i=li;i<=lf;i++)
             for(int j=li;j<=lf;j++)
                 solucionFronterasPeriodicas(k,i,j);
+    //Se imprime el arreglo con los limites indicados
+    imprimir(tim,li,lf);
+    hallarTemperaturaPromedio(tim,li,lf);
 
 }
 
