@@ -21,6 +21,9 @@ const int N=80;
 const int max_time=10000;
 // arreglo que guarda la temperatura en el tiempo i, la fila j y la columna 4k 
 double T[max_time][N][N];
+double Tpromedio2D[3][max_time];
+//variable que indica que condicion se esta imprimiendo, se utiliza al calcular el tiempo promedio2D
+int condicion=0;
 double dx=h/N;
 double dy=dx;
 double dt=10;
@@ -101,6 +104,8 @@ void imprimir(int tiempo,int limite_inferior,int limite_superior){
 
 ///Funcion para hallar la temperatura promedio
 void hallarTemperaturaPromedio(int tim,int limite_inferior,int limite_superior){
+    //Variable que guarda el numero de cuadriculas de la matriz del tiempo
+    int NN=(limite_superior-limite_inferior)*(limite_superior-limite_inferior);
     //Se inicializa el arreglo con 0
     for(int i=limite_inferior;i<limite_superior;i++)
             for(int j=limite_inferior;j<limite_superior;j++)
@@ -108,11 +113,19 @@ void hallarTemperaturaPromedio(int tim,int limite_inferior,int limite_superior){
     //Se suman todas las temperaturas en i,j a traves del tiempo divididas en el tiempo total para sacar el primedio
     for(int k=0;k<tim;k++)
         for(int i=limite_inferior;i<limite_superior;i++)
-            for(int j=limite_inferior;j<limite_superior;j++)
+            for(int j=limite_inferior;j<limite_superior;j++){
                 Tpromedio[i][j]+=(T[k][i][j])/tim;
+                Tpromedio2D[condicion][k]+=(T[k][i][j])/NN;
+            }
     for(int i=limite_inferior;i<limite_superior;i++)
         for(int j=limite_inferior;j<limite_superior;j++)
             fileEE<<Tpromedio[i][j]<<endl;
+    fileEE<<tim<<endl;
+    for(int i=0;i<tim;i++){
+        fileEE<<Tpromedio2D[condicion][i]<<endl;
+    }
+    condicion++;
+	
 }
 
 void iniciarCondicionesFijas(){
