@@ -85,7 +85,9 @@ double solucionFronterasAbiertas(int k, int i, int j){
     //retorne la respuesta
     return T[k][i][j];
 }
+//Creo el archivo para guardar los datos
 ofstream fileEE;
+//Creo una variable para guardar el promedio
 double Tpromedio[N][N];
 
 ///Funcion para imprimir los valores del arreglo de temperatura
@@ -224,8 +226,8 @@ void iniciarCondicionesPeriodicas(){
 
 int main(){
 	fileEE.open("datos.dat");
-	void iniciarCondicionesFijas();
-	void iniciarCondicionesAbiertas();
-	void iniciarCondicionesPeriodicas();
+	iniciarCondicionesFijas();
+	iniciarCondicionesAbiertas();
+	iniciarCondicionesPeriodicas();
     return 0;
 }
